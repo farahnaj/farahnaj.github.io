@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Invalid Signature file digest - Maven solution </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="rohitvvv">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+   
+	
+<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../">Rohit Vaidya</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../index.html">Home</a></li>
+            <li><a href="https://github.com/rohitvvv">Github</a><li>
+            <li><a href="../../feed.xml">Subscribe</a></li>
+            <li><a href="../../about.html">About</a></li>
+             <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>-->
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+	<div class="page-header">
+		<h1>Invalid Signature file digest - Maven solution </h1>
+	</div>
+
+	<p><em>24 March 2015</em></p>
+	<p>Are you getting this exception ?
+<pre class="prettyprint">
+<code>
+Error: A JNI error has occurred, please check your installation and try again
+Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+	at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:284)
+	at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:238)
+	at java.util.jar.JarVerifier.processEntry(JarVerifier.java:273)
+	at java.util.jar.JarVerifier.update(JarVerifier.java:228)
+	at java.util.jar.JarFile.initializeVerifier(JarFile.java:383)
+</code>
+</pre>
+<!--more-->
+<p>If you a mere mortal like I am and have got this SecurityException after adding a maven repository read on. 
+    The most basic cause of such a exception is some dependency define in pom.xml is pulling in jars which are singed. After building your application unzip the final jar that gets created for your application. 
+<p>
+    In my case its GitFx-1.0-SNAPSHOT.jar. Unzip GitFx-1.0-SNAPSHOT.jar or
+    do a jar -xvf GitFx-1.0-SNAPSHOT.jar. Inspect the META_INF folder. 
+    You will find <b>.RSA,.SF or .DSA</b> present under META_INF. This is signed information. The best way to explain why one gets the exception at runtime is “Some of your dependencies are likely signed jarfiles. When you combine them all into one big jarfile, the corresponding signatures are no longer valid so the runtime halts.”  - StackOverflow Answer[1] 
+</p>
+Solution to fix this with <b>maven-dependency-plugin</b>. Small snippet of code in my pom.xml. 
+
+<pre class="prettyprint linenums lang-xml"><span style="color:#ee3030;"></span>
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.6&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;unpack-dependencies&lt;/id&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;unpack-dependencies&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;excludeScope&gt;system&lt;/excludeScope&gt;
+                &lt;excludes&gt;META-INF/*.SF&lt;/excludes&gt;
+                &lt;excludes&gt;META-INF/*.DSA&lt;/excludes&gt;
+                &lt;excludes&gt;META-INF/*.RSA&lt;/excludes&gt;
+                &lt;excludeGroupIds&gt;junit,org.mockito,org.hamcrest&lt;/excludeGroupIds&gt;
+                &lt;outputDirectory&gt;${project.build.directory}/classes&lt;/outputDirectory&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+
+</pre>
+Line # 15,16 and 17 is where we prevent the signed information from going into our final consolidated jar file. 
+<P>Some more information about the plugins configuration can be found  
+    <a href="https://maven.apache.org/plugins/maven-dependency-plugin/examples/unpacking-artifacts.html">here[2]</a>
+</P>
+Hope this helps :) 
+<P>
+    <b> References:</b>
+<ol>
+    <li><a href="http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar">Stack OverFlow</a></li>
+    <li><a href="https://maven.apache.org/plugins/maven-dependency-plugin/examples/unpacking-artifacts.html">Apache Maven - Unpacking Specific Artifacts</a></li>
+</ol>
+
+<!-- begin htmlcommentbox.com -->
+ <div id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">Comment Box</a> is loading comments...</div>
+ <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+ <script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=(""+window.location).replace(/'/g,"%27") || hcb_user.PAGE, h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
+<!-- end htmlcommentbox.com -->
+</p>
+
+	<hr />
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.3.2</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/prettify.js"></script>
+    
+  </body>
+</html>

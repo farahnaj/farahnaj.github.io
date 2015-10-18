@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>JavaFX Introduction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="rohitvvv">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+   
+	
+<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../">Rohit Vaidya</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../index.html">Home</a></li>
+            <li><a href="https://github.com/rohitvvv">Github</a><li>
+            <li><a href="../../feed.xml">Subscribe</a></li>
+            <li><a href="../../about.html">About</a></li>
+             <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>-->
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+	<div class="page-header">
+		<h1>JavaFX Introduction</h1>
+	</div>
+
+	<p><em>15 March 2015</em></p>
+	<p>
+<p><b>JavaFX</b> is a software platform for creating Rich Internet Applications that can run across variety of platforms[1].It
+has a collection of Java Packages with ability to add fancy GUI to your Java application. 
+JavaFX is official standard part of Java platform. JavaFX is considered as a successor of Swing
+and can be easily understood by a Swing developer. You can get the latest in JavaFX in early access preview 
+of JavaFX in <a href="https://jdk8.java.net/download.html">Java 8 EA 40</a></p>
+<!--more--><p><b>History:</b> Formerly it was called in F3(Form Follows function) and developed by Oliver Smith at Sun 
+    Microsystems. JavaFX was initially developed as a scripting language however it was later 
+    discontinued by Oracle and declared dead in Java One 2010. Now JavaFX has a clean Java API. 
+
+<p>
+    <b>JavaFX Lingo</b>
+In order to understand JavaFX well one needs to familiarize with the Jargon used
+<ul>
+    <li>Stage - Top level container for all Java Objects</li>
+    <li>Scene - A scene is a hierarchical node structure that contains all scenes components</li>
+    <li>Group - Group is a general purpose container node</li>
+</ul>
+</p>
+<p><b>Stage:</b> Stage is implicitly created by JavaFX. JavaFX makes you think like a designer and 
+stage is where you will host your scene</p>
+<p><b>Scene:</b>A scene is a hierarchical node structures that contains all scene’s components</p>
+<p><b>Group:</b>Group is general purpose container node. This is analogous to a layout creates</p>
+
+<p><b>Various possibilities with JavaFX</b></p>
+<ul>
+<li>CSS Support</li>
+<li>Visual Effects: Shadow,reflect,blur perspective</li>
+<li>Animation- rotate,scale,translate etc</li>
+<li>Chars</li>
+<li>3D Object - cubes,cylinder,spheres etc</li>
+<li>Touch Interface</li>
+<li>Property bindings</li>
+</ul>
+
+<b>JavaFX Application Life Cycle</b>
+<ol>
+    <li>init (): Default implementation of init does nothing. 
+        One can override to perform any processing before application UI is displayed</li>
+<li>start (): No default implementation and is declared abstract. 
+    Your app must override this. Build and display the UI</li>
+<li>Wait for application to End. Typically happens when user signals end of program</li>
+<li>stop(): Default implementation does not do anything
+    One can override to to perform any necessary processing as program terminates</li> 
+<ul>
+
+<pre class="prettyprint">
+<code>
+
+package sampleapplication;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+/**
+ *
+ * @author rvvaidya
+ */
+public class SampleApplication extends Application {
+    
+    @Override
+    public void start(Stage primaryStage) {
+        Button btn = new Button();
+        btn.setText("Say 'Hello World'");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Hello World!");
+            }
+        });
+        
+        StackPane root = new StackPane();
+        root.getChildren().add(btn);
+        
+        Scene scene = new Scene(root, 300, 250);
+        
+        primaryStage.setTitle("Hello World!");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
+}
+
+</code>
+
+</pre>
+    <P><b>Code Walk through</b>
+    <ul>
+        <li>Any JavaFX application must extend javafx.application.Application</li>
+    <li>The start method is overriden. The override also passes the Stage object</li>   
+    <li>Button object is instantiated and event handler is associated</li>
+    <li>A stack pane is created. This is a layout and corresponds to the group</li>
+    <li>Create the Scene object and pass the group reference </li>
+    <li>The scene is hosted on the stage</li>
+    <li>In main (the main entry point for java application) launch is called. This launches
+        the JavaFX application.</li></ul> 
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'rohitvvvinfo';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</P>
+</p>
+
+	<hr />
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.3.2</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/prettify.js"></script>
+    
+  </body>
+</html>
