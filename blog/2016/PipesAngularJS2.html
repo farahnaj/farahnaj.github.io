@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Pipes in Angular JS 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="rohitvvv">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+   
+	
+<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../">Farahnaj</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../index.html">Home</a></li>
+            <li><a href="https://github.com/farahnaj">Github</a><li>
+            <li><a href="../../feed.xml">Subscribe</a></li>
+            <li><a href="../../about.html">About</a></li>
+             <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>-->
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+	<div class="page-header">
+		<h1>Pipes in Angular JS 2.0</h1>
+	</div>
+
+	<p><em>05 March 2016</em></p>
+	<p><p>
+This is an introduction to Pipes in AngularJS 2
+<!--more-->
+
+<h3> What is the Pipe?</h3>
+<ul>
+<li>Pipe (fluid conveyance), a hollow cylinder following certain dimension rules</li>
+<li>Anonymous pipe and named pipe, a one-way communication channel used for inter-process communication</li>
+<li>Vertical bar, sometimes called "pipe", the ASCII character "|"</li>
+<li>You can connect two commands together so that the output from one program becomes the input of the next program. Two or more commands connected in this way form a pipe.</li>
+</ul>
+
+<p>Yes, We are talking about last one from above. In computer programming, especially in UNIX operating systems, a pipe is a technique for passing information from one program process to another. Unlike other forms of interprocess communication (IPC), a pipe is one-way communication only. Basically, a pipe passes a parameter such as the output of one process to another process which accepts it as input. The system temporarily holds the piped information until it is read by the receiving process.</p>
+
+<h4>The grep Command in UNIX</h4>
+<p>The simplest use of grep is to look for a pattern consisting of a single word. It can be used in a pipe so that only those lines of the input files containing a given string are sent to the standard output. If you don't give grep a filename to read, it reads its standard input; that's the way all filter programs work −</p>
+
+<pre class="prettyprint">
+<code>
+$ls -l | grep "Aug"
+-rw-rw-rw-   1 john  doc     11008 Aug  6 14:10 ch02
+-rw-rw-rw-   1 john  doc      8515 Aug  6 15:30 ch07
+-rw-rw-r--   1 john  doc      2488 Aug 15 10:51 intro
+-rw-rw-r--   1 carol doc      1605 Aug 23 07:35 macros
+$
+</code>
+</pre>
+
+<h3> What is the Filter?</h3>
+<p>Now, We know what is Pipe and how it works in UNIX. This Pipe is formerly known as filters in AngularJS 1.x. In Angular 1 we had filter which helped format or transform how data was displayed in our templates. In Angular 2 we have a very similar feature but renamed to Pipes. This rename was to better align of what the feature does. Coming from the Unix background we | pipe together commands. So in Angular 2 we use the same | pipe character to format our data.</p>
+<p>Angular 2 has many new concepts and some of the same concepts from Angular 1.x. Many of the filters from Angular 1.x carry over to pipes in Angular 2.0, but we also get some new ones. Angular 1.x and Angular 2 have an equal number of filters to pipes, but there isn't direct crossover. </p>
+The following table shows a comparison:
+
+<table width="50%" align="center">
+<thead>
+<tr>
+<th> Filter/Pipe Name </th>
+<th style="text-align:center;"> Angular 1.x </th>
+<th style="text-align:center;"> Angular 2 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> currency         </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> date             </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> uppercase        </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> json             </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> limitTo          </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> lowercase        </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> number           </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;">           </td>
+</tr>
+<tr>
+<td> orderBy          </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;">           </td>
+</tr>
+<tr>
+<td> filter           </td>
+<td style="text-align:center;"> ✓    </td>
+<td style="text-align:center;">           </td>
+</tr>
+<tr>
+<td> async            </td>
+<td style="text-align:center;">             </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> decimal          </td>
+<td style="text-align:center;">             </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+<tr>
+<td> percent          </td>
+<td style="text-align:center;">             </td>
+<td style="text-align:center;"> ✓  </td>
+</tr>
+</tbody>
+</table>
+
+<h3>Formatting Data with Filters in AngularJS 1.x</h3>
+<p>Filters allow you to declare how to transform data for display to the user within an interpolation in your template. The syntax for using filters is:</p>
+
+<pre class="prettyprint">
+<code>
+{{ expression | filterName : parameter1 : ...parameterN }}
+</code>
+</pre>
+
+<p>where expression is any Angular expression, filterName is the name of the filter you want to use, and the parameters to the filter are separated by colons. The parameters themselves can be any valid Angular expression.
+Angular comes with several filters, like currency, which we’ve seen:</p>
+
+<pre class="prettyprint">
+<code>
+{{12.9 | currency}}
+This bit of code will display the following:
+$12.90
+</code>
+</pre>
+
+<p>We put this declaration in the view (rather than in the controller or model) because the dollar sign in front of the number is only important to humans, and not to the logic we use to process the number.</p>
+<p>Filters can also be chained with additional pipe symbols in the binding. For example, we can format the previous example for no digits after the decimal by adding the number filter, which takes the number of decimals to round to as a parameter. So:</p>
+
+<pre class="prettyprint">
+<code>
+{{12.9 | number:0 | currency}}
+displays:
+$13.00
+</code>
+</pre>
+
+<h3>Formatting Data with Pipes in AngularJS 2.0</h3>
+<p>AngularJS 1.x has a filter called <font color="blue">filter</font>, which allows us to do this. However, the duplication of the names often leads to confusion. That's another reason the core team renamed the filter component to <font color="blue">pipe</font>.</p>
+<p>The motivation behind the new name is the syntax used for pipes and filters:</p>
+
+<pre class="prettyprint">
+<code>
+{{expression | decimal | currency}}
+</code>
+</pre>
+
+<p>In the preceding example, we apply the pipes, decimal and currency, to the value returned by expression. The entire expression between the curly braces looks like Unix pipe syntax.</p>
+<p>Lets look at a simple pipe built into Angular 2 the date pipe. The date pipe simply formats our date in our templates.</p>
+
+<pre class="prettyprint">
+<code>
+{{date | date:'shortDate'}}
+{{date | date:'longDate'}}
+</code>
+</pre>
+
+The date Wed May 3 2016 22:01:58 GMT-0600 (Central Standard Time) would be formated to 5/3/2016 and May 3, 2016.
+
+<h3>Custom Filters The Angular 1.x way</h3>
+<p>You’re not limited to the bundled filters, and it is simple to write your own. If we wanted to create a filter that title-cased strings for our headings, for example, we could do so as follows:</p>
+
+<pre class="prettyprint">
+<code>
+var homeModule = angular.module('HomeModule', []);
+homeModule.filter('titleCase', function() {
+  var titleCaseFilter = function(input) {
+    var words = input.split(' ');
+    for (var i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+    }
+    return words.join(' ');
+  };
+  return titleCaseFilter;
+});
+</code>
+</pre>
+
+With a template like this:
+
+<pre class="prettyprint">
+<code>
+&lt;body ng-app='HomeModule' ng-controller="HomeController">
+  &lt;h1>{{pageHeading | titleCase}}&lt;/h1>
+&lt;/body>
+</code>
+</pre>
+
+and inserting the pageHeading as a model variable via a controller:
+
+<pre class="prettyprint">
+<code>
+function HomeController($scope) {
+  $scope.pageHeading = 'behold the majesty of your page title';
+}
+</code>
+</pre>
+
+we would see something resembling like following.
+
+<pre class="prettyprint">
+<code>
+<h3 align="center">Behold The Majesty Of Your Page Title</h3>
+</code>
+</pre>
+
+<h3>Custom Pipes The Angular 2.0 way</h3>
+<p>The syntax for defining pipes is similar to the one used for the definition of directives and components. In order to create a new pipe, we can use the ES2015 decorator, <font color="blue">@Pipe</font>. It allows us to add metadata to a class, declaring it as a pipe. All we need to do is to provide a name for the pipe and define the data formatting logic. There's also an alternative ES5 syntax, which can be used if we want to skip the process of transpilation.</p>
+<p>During runtime, once the Angular 2 expression interpreter finds out that a given expression includes a call of a pipe, it will retrieve it out of the pipes collection allocated within the component and invoke it with the appropriate arguments.</p>
+<p>The following example illustrates how we can define a simple pipe called <i><font color="blue">lowercase1</font></i>, which transforms the given string, passed as argument to its lowercase representation:</p>
+
+<pre class="prettyprint">
+<code>
+@Pipe({ name: 'lowercase1' })
+class LowerCasePipe1 implements PipeTransform {
+  transform(value: string): string {
+    if (!value) return value;
+    if (typeof value !== 'string') {
+      throw new Error('Invalid pipe value', value);
+    }
+    return value.toLowerCase();
+  }
+}
+</code>
+</pre>
+
+In order to be consistent, let's show the ECMAScript 5 syntax for defining pipes:
+<pre class="prettyprint">
+<code>
+var LowercasePipe1 = ng.core.
+  Pipe({
+    name: 'lowercase'
+  })
+  .Class({
+    constructor: function () {},
+    transform: function (value) {
+      if (!value) return value;
+      if (typeof value === 'string') {
+        throw new Error('Invalid pipe value', value);
+      }
+	return value.toLowerCase();
+    }
+  });
+</code>
+</pre>
+
+<p>In the TypeScript syntax, we implement the <i><font color="blue">PipeTransform</font></i> interface and define the <i><font color="blue">transform</font></i> method declared inside it. However, in ECMAScript 5, we do not have support for interfaces, but we still need to implement the <i><font color="blue">transform</font></i> method in order to define a valid Angular 2 pipe. We are going to explain the TypeScript interfaces in the next chapter.</p>
+<p>Now let's demonstrate how we can use the <i><font color="blue">lowercase1</font></i> pipe inside a component:</p>
+
+<pre class="prettyprint">
+<code>
+@Component({
+  selector: 'app',
+  pipes: [LowercasePipe1],
+  template: '&lt;h1>{{"SAMPLE" | lowercase1}}&lt;/h1>'
+})
+class App {}
+</code>
+</pre>
+
+And, the alternative ECMAScript 5 syntax for this is:
+<pre class="prettyprint">
+<code>
+var App = ng.core.Component({
+  selector: 'app',
+  pipes: [LowercasePipe1],
+  template: '&lt;h1>{{"SAMPLE" | lowercase1}}&lt;/h1>'
+})
+.Class({
+  constructor: function () {}
+});
+</code>
+</pre>
+
+We can use the <i><font color="blue">App</font></i> component with the following markup:
+
+<pre class="prettyprint">
+<code>
+&lt;app>&lt;/app>
+</code>
+</pre>
+   
+<p>The result we are going to see on the screen is the text sample within an <i><font color="blue">h1</font></i> element.</p>
+<p>By keeping the data formatting logic as a separate component, Angular 2 keeps the strong separation of concerns that can be seen throughout. We will take a look at how we can define stateful and stateless pipes for our application very soon.</p>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'farahnaj';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript> 
+
+</p>
+
+	<hr />
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.4.0</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/prettify.js"></script>
+    
+  </body>
+</html>

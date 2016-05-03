@@ -6,9 +6,317 @@
     <atom:link href="http://jbake.org/feed.xml" rel="self" type="application/rss+xml" />
     <description>JBake Bootstrap Template</description>
     <language>en-gb</language>
-    <pubDate>Mon, 19 Oct 2015 00:43:09 +0530</pubDate>
-    <lastBuildDate>Mon, 19 Oct 2015 00:43:09 +0530</lastBuildDate>
+    <pubDate>Wed, 4 May 2016 00:35:03 +0530</pubDate>
+    <lastBuildDate>Wed, 4 May 2016 00:35:03 +0530</lastBuildDate>
 
+    <item>
+      <title>Pipes in Angular JS 2.0</title>
+      <link>http://jbake.org/blog/2016/PipesAngularJS2.html</link>
+      <pubDate>Sat, 5 Mar 2016 00:00:00 +0530</pubDate>
+      <guid isPermaLink="false">blog/2016/PipesAngularJS2.html</guid>
+      	<description>
+	&lt;p&gt;
+This is an introduction to Pipes in AngularJS 2
+&lt;!--more--&gt;
+
+&lt;h3&gt; What is the Pipe?&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Pipe (fluid conveyance), a hollow cylinder following certain dimension rules&lt;/li&gt;
+&lt;li&gt;Anonymous pipe and named pipe, a one-way communication channel used for inter-process communication&lt;/li&gt;
+&lt;li&gt;Vertical bar, sometimes called &quot;pipe&quot;, the ASCII character &quot;|&quot;&lt;/li&gt;
+&lt;li&gt;You can connect two commands together so that the output from one program becomes the input of the next program. Two or more commands connected in this way form a pipe.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Yes, We are talking about last one from above. In computer programming, especially in UNIX operating systems, a pipe is a technique for passing information from one program process to another. Unlike other forms of interprocess communication (IPC), a pipe is one-way communication only. Basically, a pipe passes a parameter such as the output of one process to another process which accepts it as input. The system temporarily holds the piped information until it is read by the receiving process.&lt;/p&gt;
+
+&lt;h4&gt;The grep Command in UNIX&lt;/h4&gt;
+&lt;p&gt;The simplest use of grep is to look for a pattern consisting of a single word. It can be used in a pipe so that only those lines of the input files containing a given string are sent to the standard output. If you don&apos;t give grep a filename to read, it reads its standard input; that&apos;s the way all filter programs work −&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+$ls -l | grep &quot;Aug&quot;
+-rw-rw-rw-   1 john  doc     11008 Aug  6 14:10 ch02
+-rw-rw-rw-   1 john  doc      8515 Aug  6 15:30 ch07
+-rw-rw-r--   1 john  doc      2488 Aug 15 10:51 intro
+-rw-rw-r--   1 carol doc      1605 Aug 23 07:35 macros
+$
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;h3&gt; What is the Filter?&lt;/h3&gt;
+&lt;p&gt;Now, We know what is Pipe and how it works in UNIX. This Pipe is formerly known as filters in AngularJS 1.x. In Angular 1 we had filter which helped format or transform how data was displayed in our templates. In Angular 2 we have a very similar feature but renamed to Pipes. This rename was to better align of what the feature does. Coming from the Unix background we | pipe together commands. So in Angular 2 we use the same | pipe character to format our data.&lt;/p&gt;
+&lt;p&gt;Angular 2 has many new concepts and some of the same concepts from Angular 1.x. Many of the filters from Angular 1.x carry over to pipes in Angular 2.0, but we also get some new ones. Angular 1.x and Angular 2 have an equal number of filters to pipes, but there isn&apos;t direct crossover. &lt;/p&gt;
+The following table shows a comparison:
+
+&lt;table width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt; Filter/Pipe Name &lt;/th&gt;
+&lt;th style=&quot;text-align:center;&quot;&gt; Angular 1.x &lt;/th&gt;
+&lt;th style=&quot;text-align:center;&quot;&gt; Angular 2 &lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt; currency         &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; date             &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; uppercase        &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; json             &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; limitTo          &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; lowercase        &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; number           &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt;           &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; orderBy          &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt;           &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; filter           &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓    &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt;           &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; async            &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt;             &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; decimal          &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt;             &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; percent          &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt;             &lt;/td&gt;
+&lt;td style=&quot;text-align:center;&quot;&gt; ✓  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3&gt;Formatting Data with Filters in AngularJS 1.x&lt;/h3&gt;
+&lt;p&gt;Filters allow you to declare how to transform data for display to the user within an interpolation in your template. The syntax for using filters is:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+{{ expression | filterName : parameter1 : ...parameterN }}
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;where expression is any Angular expression, filterName is the name of the filter you want to use, and the parameters to the filter are separated by colons. The parameters themselves can be any valid Angular expression.
+Angular comes with several filters, like currency, which we’ve seen:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+{{12.9 | currency}}
+This bit of code will display the following:
+$12.90
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;We put this declaration in the view (rather than in the controller or model) because the dollar sign in front of the number is only important to humans, and not to the logic we use to process the number.&lt;/p&gt;
+&lt;p&gt;Filters can also be chained with additional pipe symbols in the binding. For example, we can format the previous example for no digits after the decimal by adding the number filter, which takes the number of decimals to round to as a parameter. So:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+{{12.9 | number:0 | currency}}
+displays:
+$13.00
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;h3&gt;Formatting Data with Pipes in AngularJS 2.0&lt;/h3&gt;
+&lt;p&gt;AngularJS 1.x has a filter called &lt;font color=&quot;blue&quot;&gt;filter&lt;/font&gt;, which allows us to do this. However, the duplication of the names often leads to confusion. That&apos;s another reason the core team renamed the filter component to &lt;font color=&quot;blue&quot;&gt;pipe&lt;/font&gt;.&lt;/p&gt;
+&lt;p&gt;The motivation behind the new name is the syntax used for pipes and filters:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+{{expression | decimal | currency}}
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;In the preceding example, we apply the pipes, decimal and currency, to the value returned by expression. The entire expression between the curly braces looks like Unix pipe syntax.&lt;/p&gt;
+&lt;p&gt;Lets look at a simple pipe built into Angular 2 the date pipe. The date pipe simply formats our date in our templates.&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+{{date | date:&apos;shortDate&apos;}}
+{{date | date:&apos;longDate&apos;}}
+&lt;/code&gt;
+&lt;/pre&gt;
+
+The date Wed May 3 2016 22:01:58 GMT-0600 (Central Standard Time) would be formated to 5/3/2016 and May 3, 2016.
+
+&lt;h3&gt;Custom Filters The Angular 1.x way&lt;/h3&gt;
+&lt;p&gt;You’re not limited to the bundled filters, and it is simple to write your own. If we wanted to create a filter that title-cased strings for our headings, for example, we could do so as follows:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+var homeModule = angular.module(&apos;HomeModule&apos;, []);
+homeModule.filter(&apos;titleCase&apos;, function() {
+  var titleCaseFilter = function(input) {
+    var words = input.split(&apos; &apos;);
+    for (var i = 0; i &lt; words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+    }
+    return words.join(&apos; &apos;);
+  };
+  return titleCaseFilter;
+});
+&lt;/code&gt;
+&lt;/pre&gt;
+
+With a template like this:
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+&amp;lt;body ng-app=&apos;HomeModule&apos; ng-controller=&quot;HomeController&quot;&gt;
+  &amp;lt;h1&gt;{{pageHeading | titleCase}}&amp;lt;/h1&gt;
+&amp;lt;/body&gt;
+&lt;/code&gt;
+&lt;/pre&gt;
+
+and inserting the pageHeading as a model variable via a controller:
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+function HomeController($scope) {
+  $scope.pageHeading = &apos;behold the majesty of your page title&apos;;
+}
+&lt;/code&gt;
+&lt;/pre&gt;
+
+we would see something resembling like following.
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+&lt;h3 align=&quot;center&quot;&gt;Behold The Majesty Of Your Page Title&lt;/h3&gt;
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;h3&gt;Custom Pipes The Angular 2.0 way&lt;/h3&gt;
+&lt;p&gt;The syntax for defining pipes is similar to the one used for the definition of directives and components. In order to create a new pipe, we can use the ES2015 decorator, &lt;font color=&quot;blue&quot;&gt;@Pipe&lt;/font&gt;. It allows us to add metadata to a class, declaring it as a pipe. All we need to do is to provide a name for the pipe and define the data formatting logic. There&apos;s also an alternative ES5 syntax, which can be used if we want to skip the process of transpilation.&lt;/p&gt;
+&lt;p&gt;During runtime, once the Angular 2 expression interpreter finds out that a given expression includes a call of a pipe, it will retrieve it out of the pipes collection allocated within the component and invoke it with the appropriate arguments.&lt;/p&gt;
+&lt;p&gt;The following example illustrates how we can define a simple pipe called &lt;i&gt;&lt;font color=&quot;blue&quot;&gt;lowercase1&lt;/font&gt;&lt;/i&gt;, which transforms the given string, passed as argument to its lowercase representation:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+@Pipe({ name: &apos;lowercase1&apos; })
+class LowerCasePipe1 implements PipeTransform {
+  transform(value: string): string {
+    if (!value) return value;
+    if (typeof value !== &apos;string&apos;) {
+      throw new Error(&apos;Invalid pipe value&apos;, value);
+    }
+    return value.toLowerCase();
+  }
+}
+&lt;/code&gt;
+&lt;/pre&gt;
+
+In order to be consistent, let&apos;s show the ECMAScript 5 syntax for defining pipes:
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+var LowercasePipe1 = ng.core.
+  Pipe({
+    name: &apos;lowercase&apos;
+  })
+  .Class({
+    constructor: function () {},
+    transform: function (value) {
+      if (!value) return value;
+      if (typeof value === &apos;string&apos;) {
+        throw new Error(&apos;Invalid pipe value&apos;, value);
+      }
+	return value.toLowerCase();
+    }
+  });
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;In the TypeScript syntax, we implement the &lt;i&gt;&lt;font color=&quot;blue&quot;&gt;PipeTransform&lt;/font&gt;&lt;/i&gt; interface and define the &lt;i&gt;&lt;font color=&quot;blue&quot;&gt;transform&lt;/font&gt;&lt;/i&gt; method declared inside it. However, in ECMAScript 5, we do not have support for interfaces, but we still need to implement the &lt;i&gt;&lt;font color=&quot;blue&quot;&gt;transform&lt;/font&gt;&lt;/i&gt; method in order to define a valid Angular 2 pipe. We are going to explain the TypeScript interfaces in the next chapter.&lt;/p&gt;
+&lt;p&gt;Now let&apos;s demonstrate how we can use the &lt;i&gt;&lt;font color=&quot;blue&quot;&gt;lowercase1&lt;/font&gt;&lt;/i&gt; pipe inside a component:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+@Component({
+  selector: &apos;app&apos;,
+  pipes: [LowercasePipe1],
+  template: &apos;&amp;lt;h1&gt;{{&quot;SAMPLE&quot; | lowercase1}}&amp;lt;/h1&gt;&apos;
+})
+class App {}
+&lt;/code&gt;
+&lt;/pre&gt;
+
+And, the alternative ECMAScript 5 syntax for this is:
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+var App = ng.core.Component({
+  selector: &apos;app&apos;,
+  pipes: [LowercasePipe1],
+  template: &apos;&amp;lt;h1&gt;{{&quot;SAMPLE&quot; | lowercase1}}&amp;lt;/h1&gt;&apos;
+})
+.Class({
+  constructor: function () {}
+});
+&lt;/code&gt;
+&lt;/pre&gt;
+
+We can use the &lt;i&gt;&lt;font color=&quot;blue&quot;&gt;App&lt;/font&gt;&lt;/i&gt; component with the following markup:
+
+&lt;pre class=&quot;prettyprint&quot;&gt;
+&lt;code&gt;
+&amp;lt;app&gt;&amp;lt;/app&gt;
+&lt;/code&gt;
+&lt;/pre&gt;
+   
+&lt;p&gt;The result we are going to see on the screen is the text sample within an &lt;i&gt;&lt;font color=&quot;blue&quot;&gt;h1&lt;/font&gt;&lt;/i&gt; element.&lt;/p&gt;
+&lt;p&gt;By keeping the data formatting logic as a separate component, Angular 2 keeps the strong separation of concerns that can be seen throughout. We will take a look at how we can define stateful and stateless pipes for our application very soon.&lt;/p&gt;
+
+
+&lt;div id=&quot;disqus_thread&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = &apos;farahnaj&apos;;
+    
+    /* * * DON&apos;T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement(&apos;script&apos;); dsq.type = &apos;text/javascript&apos;; dsq.async = true;
+        dsq.src = &apos;//&apos; + disqus_shortname + &apos;.disqus.com/embed.js&apos;;
+        (document.getElementsByTagName(&apos;head&apos;)[0] || document.getElementsByTagName(&apos;body&apos;)[0]).appendChild(dsq);
+    })();
+&lt;/script&gt;
+&lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;https://disqus.com/?ref_noscript&quot; rel=&quot;nofollow&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt; 
+
+
+	</description>
+    </item>
     <item>
       <title>Using MongoDB Grails Plugin </title>
       <link>http://jbake.org/blog/2015/MongoDB-Grails.html</link>
