@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Using MongoDB Grails Plugin </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="farahnaj">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/asciidoctor.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link href="../../css/prettify.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../favicon.ico">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+   
+	
+<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../">Farahnaj</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../index.html">Home</a></li>
+            <li><a href="https://github.com/farahnaj">Github</a><li>
+            <li><a href="../../feed.xml">Subscribe</a></li>
+            <li><a href="../../about.html">About</a></li>
+             <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>-->
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+	<div class="page-header">
+		<h1>Using MongoDB Grails Plugin </h1>
+	</div>
+
+	<p><em>18 October 2015</em></p>
+	<p><p>
+This is a quick step-by-step tutorial on using Grails 2.4.4 with MongoDB Grails plugin for newbies like me in your Grails application.
+<ul>
+<li>Pre-requisite : Grials 2.4.4, Groovy 2.4.4, MongoDB 3.0.7</li>
+<li>IDE : Intelij 3.0</li>
+<li>OS : Ubuntu 14.04</li>
+</ul>
+<a href="https://grails.org/plugin/mongodb">MongoDB GORM</a> is a plugin that integrates the Mongo document datastore into Grails, providing a GORM(Object Relational Mapping) API onto it.
+</p><!--more-->
+
+<h3> Install and set-up JAVA & Grails on an Ubuntu 14.04</h3>
+You will need to setup Java and Grails on Ubuntu. This <a href="https://www.rosehosting.com/blog/install-and-set-up-java-grails-on-an-ubuntu-14-04-linux-vps/">blog</a> really documents it well.  
+<h3> Install MongoDB</h3>
+Intall MongoDB on your box. 
+<a href="http://docs.mongodb.org/master/tutorial/install-mongodb-on-ubuntu/"> Here</a> is the official documentation on how to do it and have
+the mongo service up and running.
+<h3> DB creation </h3>
+<ol>
+<li> 
+To enter mongodb shell run the following command 
+<pre class="prettyprint">
+<code>
+$mongo
+</code>
+</pre>
+This will connect you to running mongod instance.
+</li>
+<li>
+MongoDB Help: 
+To get list of commands type <b>db.help()</b> in mongodb client. This will give you list of commands as follows:
+<pre class="prettyprint">
+<code>
+> db.help()
+DB methods:
+	db.adminCommand(nameOrDocument) - switches to 'admin' db, and runs command [ just calls db.runCommand(...) ]
+	db.auth(username, password)
+	db.cloneDatabase(fromhost)
+	db.commandHelp(name) returns the help for the command
+	db.copyDatabase(fromdb, todb, fromhost)
+	db.createCollection(name, { size : ..., capped : ..., max : ... } )
+	db.createUser(userDocument)
+	db.currentOp() displays currently executing operations in the db
+	db.dropDatabase()
+	db.eval() - deprecated
+	db.fsyncLock() flush data to disk and lock server for backups
+	db.fsyncUnlock() unlocks server following a db.fsyncLock()
+	db.getCollection(cname) same as db['cname'] or db.cname
+	db.getCollectionInfos()
+	db.getCollectionNames()
+	db.getLastError() - just returns the err msg string
+	db.getLastErrorObj() - return full status object
+	db.getLogComponents()
+	db.getMongo() get the server connection object
+	db.getMongo().setSlaveOk() allow queries on a replication slave server
+	db.getName()
+	db.getPrevError()
+	db.getProfilingLevel() - deprecated
+	db.getProfilingStatus() - returns if profiling is on and slow threshold
+	db.getReplicationInfo()
+	db.getSiblingDB(name) get the db at the same server as this one
+	db.getWriteConcern() - returns the write concern used for any operations on this db, inherited from server object if set
+	db.hostInfo() get details about the server host
+	db.isMaster() check replica primary status
+	db.killOp(opid) kills the current operation in the db
+	db.listCommands() lists all the db commands
+	db.loadServerScripts() loads all the scripts in db.system.js
+	db.logout()
+	db.printCollectionStats()
+	db.printReplicationInfo()
+	db.printShardingStatus()
+	db.printSlaveReplicationInfo()
+	db.dropUser(username)
+	db.repairDatabase()
+	db.resetError()
+	db.runCommand(cmdObj) run a database command.  if cmdObj is a string, turns it into { cmdObj : 1 }
+	db.serverStatus()
+	db.setLogLevel(level,<component>)
+	db.setProfilingLevel(level,<slowms>) 0=off 1=slow 2=all
+	db.setWriteConcern( <write concern doc> ) - sets the write concern for writes to the db
+	db.unsetWriteConcern( <write concern doc> ) - unsets the write concern for writes to the db
+	db.setVerboseShell(flag) display extra information in shell output
+	db.shutdownServer()
+	db.stats()
+	db.version() current version of the server
+</code>
+</pre>
+</li>
+<li>
+MongoDB Statistics:
+To get stats about mongodb server type the command <b>db.stats()</b> in mongodb client. This will show the database name, number of collections and documents in the database.If you are unfamilar with what document and collection is, please refer the <a href="http://www.tutorialspoint.com/mongodb/mongodb_overview.htm">documention</a>. Output of the command is shown below:
+<pre class="prettyprint">
+<code>
+> db.stats()
+{
+	"db" : "test",
+	"collections" : 0,
+	"objects" : 0,
+	"avgObjSize" : 0,
+	"dataSize" : 0,
+	"storageSize" : 0,
+	"numExtents" : 0,
+	"indexes" : 0,
+	"indexSize" : 0,
+	"fileSize" : 0,
+	"ok" : 1
+}
+</code>
+</pre>
+</li>
+<li>
+To check your current database use the command db
+<pre class="prettyprint">
+<code>
+>db
+test
+</code>
+</pre>
+In mongodb default database is test. If you didn't create any database then collections will be stored in test database.
+
+</li>
+<li>
+If you want to create a database with name <University>, then use DATABASE statement as follows:
+
+<pre class="prettyprint">
+<code>
+>use University
+switched to db University
+</code>
+</pre>
+To check your currently selected database use the command <b>db</b>
+<pre class="prettyprint">
+<code>
+>db
+University
+</code>
+</pre>
+</li>
+<li>
+If you want to check your databases list, then use the command <b>show dbs</b>
+<pre class="prettyprint">
+<code>
+>show dbs
+local     0.78125GB
+test      0.23012GB
+</code>
+</pre>
+</li>
+<li>
+Your created database (University) is not present in list. To display database you need to insert atleast one document into it.
+
+<pre class="prettyprint">
+<code>
+>db.Student.insert({"name":"Test Student"})
+>show dbs
+local            0.78125GB
+University       0.23012GB
+test             0.23012GB
+</code>
+</pre>
+</li>
+</ol>
+
+<h3>App creation</h3>
+<ol>
+<li>
+Create grails app in intelij. Please find this documented <a href="https://www.jetbrains.com/idea/help/getting-started-with-grails.html">here</a>.
+</li>
+<li>
+To get started with GORM for Mongo you need configure it as a dependency in <b>BuildConfig.groovy</b>:
+<pre class="prettyprint">
+<code>
+plugins {
+	compile ':mongodb:3.0.3' // or whatever is the latest vesrion
+}
+</code>
+</pre>
+If you plan to use MongoDB as your primary datastore then you need to remove the Hibernate plugin from the <b>grails-app/conf/BuildConfig.groovy </b>file by commenting out the hibernate line in the plugins block
+<pre class="prettyprint">
+<code>
+compile ':hibernate:3.6.10.12'
+</code>
+</pre>
+</li>
+<li>
+As you can see the server is running on port 27017 (check mongod.log, I love this file.), but don't worry. The Mongodb plugin for Grails will automatically configure itself to look for Mongodb on that port by default.
+
+If you want to configure how Grails connects to Mongo then you can do so using the following settings in <b>grails-app/conf/DataSource.groovy</b>:
+<pre class="prettyprint">
+<code>
+grails {
+    mongo {
+        host = "localhost"
+        port = 27017
+        username = "DemoUser"
+        password = "password"
+        databaseName = "University"
+    }
+}
+</code>
+</pre>
+
+But easy way (and worked for me) is <b>"connectionString"</b>. You can remove all content from <b>DataSource.groovy</b> which was added previously and replace it with the following:
+
+<pre class="prettyprint">
+<code>
+grails {
+    mongo {
+        connectionString="mongodb://DemoUser:password@localhost:27017/University"
+    }
+}
+</code>
+</pre>
+The following is the standard URI connection scheme:
+<pre class="prettyprint">
+<code>
+mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
+</code>
+</pre>
+Using MongoDB connection strings is currently the most flexible and recommended way to configure <a href="http://docs.mongodb.org/manual/reference/connection-string/">MongoDB connections</a>.
+</li>
+<li><h4>Global Mapping Configuration</h4>
+Using the <b>grails.mongo.default.mapping</b> setting in <b>Config.groovy</b> you can configure global mapping options across your domain classes. This is useful if, for example, you want to disable optimistic locking globally or you wish to use DBRefs in your association mappings. 
+For example, the following configuration will disable optimistic locking globally and use DBRefs for all properties:
+<pre class="prettyprint">
+<code>
+grails.mongo.default.mapping = {
+    version false
+    '*'(reference:true)
+}
+</code>
+</pre>
+The <b>*</b> method is used to indicate that the setting applies to all properties.
+</li>
+<li><h4>Basic Mapping</h4>
+The way GORM for Mongo works is to map each domain class to a Mongo collection. For example given a domain class such as:
+<pre class="prettyprint">
+<code>
+class Student {
+    String name
+    static constraints = {
+        name attr:"name"
+    }
+}
+</code>
+</pre>
+This will map onto a Mongo DBCollection called <b>"Student"</b>.
+<p>After implementing step 6 you may hit the following error in IntellIJ Run window: 
+<pre>
+<code>
+Error 2015-10-18 22:37:45,514 [http-bio-9091-exec-10] ERROR errors.GrailsExceptionResolver  - ConverterNotFoundException occurred when processing request: [GET] /UniversityApp/student/index<br>
+No converter found capable of converting from type org.bson.types.ObjectId to type java.lang.Long. Stacktrace follows:<br>
+Message: No converter found capable of converting from type org.bson.types.ObjectId to type java.lang.Long
+</code>
+</pre>
+To explain more, MongoDB has a default <b>_id</b> (Int) as primary key for a <b>document</b> (Row in sql) in a <b>collection</b> (Table in sql).
+Grails will try to map <b>Long ID</b> of domain class Student with <b>Int _id</b> of document Student. It may give the following error in browser at runtime:
+<pre  class="prettyprint">
+<code>
+Class:org.springframework.core.convert.ConverterNotFoundException<br>
+Message:No converter found capable of converting from type org.bson.types.ObjectId to type java.lang.Long
+</code> 
+</pre>
+To solve it, you will need to add one more field as <b>"ObjectId id"</b> in domain class Student.
+Your updated domain class shall look like this:
+<pre class="prettyprint">
+<code>
+import org.bson.types.ObjectId
+
+class Student {
+    ObjectId id
+    String name
+    static constraints = {
+        name attr:"name"
+    }
+}
+</code>
+</pre>
+</li>
+<li> <h4>Generate controller with scaffolding.</h4>
+<pre class="prettyprint">
+<code>
+class StudentController {
+static scaffold = Student
+}
+</code>
+</pre>
+Or Generate controller as well as views.
+
+</li>
+<li>
+<h4>Run application</h4> For running your application you have to ensure that mogod service is running by issuing the following command
+<pre class="prettyprint">
+<code>
+$ mongostat
+</code>
+</pre>
+if you get this message <b>“couldn’t connect to [127.0.0.1] couldn’t connect to server 127.0.0.1”</b> you must start the mongod service. See how to start mongod but if the mongo service is already running you will see the result of that command like this<p>&nbsp;</p>
+<img src="../../mongostat.jpg"></img>
+<p>&nbsp;</p>
+After everything goes OK It’s time to run-app
+<pre class="prettyprint">
+<code>
+$ grails run-app
+</code>
+</pre>
+and hit the browser by localhost:8080/yourapp you will see
+<img src="../../ui.jpg"></img>
+</li>
+<li>
+<h4>Test insert and query data</h4>
+<img src="../../ui2.jpg"></img>
+</li>
+<li>
+<h4>Use mongoDB shell to see data</h4>
+<pre class="prettyprint">
+<code>
+$ mongo
+MongoDB shell version: 3.0.7
+connecting to: test
+> use University
+switched to db University
+> show collections
+Student
+Student.next_id
+system.indexes
+> db.Student.find()
+{ "_id" : ObjectId("5623a53844ae4ef024a71201"), "name" : "Roy", "version" : NumberLong(1) }
+{ "_id" : ObjectId("5623a53e44ae4ef024a71202"), "name" : "Molly", "version" : NumberLong(1) }
+</code>
+</pre>
+</li>
+</ol>
+<h2>Conclusion</h2>
+We configured a grails application to connect to Mongo DB using the Grails plugin. All the internal nuances of making grails to talk to mongo are described in the most basic way. I have tried to document all the basic quirks I faced during making the configuration to work. I hope this helps somone. Please feel free to comment, subscribe and share the blog. 
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'farahnaj';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript> 
+
+</p>
+
+	<hr />
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.4.0</a></p>
+      </div>
+    </div>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/prettify.js"></script>
+    
+  </body>
+</html>
